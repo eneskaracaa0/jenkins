@@ -7,5 +7,20 @@ pipeline {
                 echo 'Hello World'
             }
         }
+        stage('Build'){
+            steps{
+                echo "Build processor.."
+            }
+        }
+        stage('Test'){
+            steps{
+                echo "Test processor.."
+            }
+        }
+        stage('Dev'){
+            steps{
+                echo "Dev processor.."
+            }
+        }
     }
 }
