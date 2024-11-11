@@ -22,5 +22,10 @@ pipeline {
                 echo "Dev processor.."
             }
         }
+        stage('Hello2'){
+            steps{
+                echo "ASDASDAS"
+            }
+        }
     }
 }
