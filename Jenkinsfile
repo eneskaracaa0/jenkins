@@ -1,31 +1,41 @@
 pipeline {
     agent {
+        // Node.js image kullanarak Jenkins container'ını çalıştırıyoruz
         docker {
-            image 'node:18-alpine'
-            args '-p 3000:3000'
+            image 'node:14' // Örneğin, Node.js 14 sürümünü kullanıyoruz
+            args '-u root'  // Gerekirse root izinleriyle çalıştırabiliriz
         }
     }
-     environment {
-            CI = 'true'
-        }
+    environment {
+        // Çevresel değişkenleri tanımlayabilirsiniz
+        NODE_ENV = 'development'
+    }
     stages {
-        stage('Build') {
+        stage('Install Dependencies') {
             steps {
+                // Bağımlılıkları yüklüyoruz
                 sh 'npm install'
             }
         }
         stage('Test') {
-                    steps {
-                        sh './jenkins/scripts/test.sh'
-                    }
-                }
-                stage('Deliver') {
-                            steps {
-                                sh './jenkins/scripts/deliver.sh'
-                                input message: 'Finished using the web site? (Click "Proceed" to continue)'
-                                sh './jenkins/scripts/kill.sh'
-                            }
-                        }
-
+            steps {
+                // Testleri çalıştırıyoruz
+                sh 'npm test'
+            }
+        }
+        stage('Build') {
+            steps {
+                // Projeyi build ediyoruz (varsa)
+                sh 'npm run build'
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Pipeline başarıyla tamamlandı.'
+        }
+        failure {
+            echo 'Pipeline başarısız oldu.'
+        }
     }
 }
