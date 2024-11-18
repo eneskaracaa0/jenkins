@@ -7,27 +7,15 @@ pipeline {
                 echo 'Building..'
             }
         }
-
-        stage('Test'){
-            steps{
-                 echo 'Testing..'
-                
+        stage('Test') {
+            steps {
+                echo 'Testing..'
             }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
     }
-
-        stage('Deploy'){
-            steps{
-
-                 echo 'Deploying..'
-                
-            }
-        }
-
-        post{
-            always{
-                echo 'Başarılı Cİ'
-            }
-        }
-        
 }
-
