@@ -1,70 +1,33 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18-alpine' // Node.js 18 Alpine imajı
-            args '-u root'        // Root kullanıcısı ile çalıştırma
-        }
-    }
-
-    environment {
-        // Ortak kullanılacak bir ortam değişkeni tanımlayabilirsiniz.
-        NODE_ENV = 'production'
-    }
+    agent any
 
     stages {
-        stage('Install Dependencies') {
+        stage('Build') {
             steps {
-                script {
-                    echo 'Installing dependencies...'
-                }
-                sh '''
-                    # Node.js ve npm sürümünü kontrol edelim
-                    node --version
-                    npm --version
-
-                    # Bağımlılıkları yükleyelim
-                    npm ci
-                '''
+                echo 'Building..'
             }
         }
 
-        stage('Run Tests') {
-            steps {
-                script {
-                    echo 'Running tests...'
-                }
-                sh '''
-                    # Testleri çalıştır
-                    npm test
-                '''
+        stage('Test'){
+            steps{
+                 echo 'Testing..'
+                
             }
-        }
-
-        stage('Build Project') {
-            steps {
-                script {
-                    echo 'Building project...'
-                }
-                sh '''
-                    # Üretim yapısını oluştur
-                    npm run build
-
-                    # Build dizinini kontrol et
-                    ls -la build
-                '''
-            }
-        }
     }
 
-    post {
-        always {
-            echo 'Pipeline finished!'
+        stage('Deploy'){
+            steps{
+
+                 echo 'Deploying..'
+                
+            }
         }
-        success {
-            echo 'Build succeeded!'
+
+        post{
+            always{
+                echo 'Başarılı Cİ'
+            }
         }
-        failure {
-            echo 'Build failed.'
-        }
-    }
+        
 }
+
